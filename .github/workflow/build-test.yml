@@ -1,0 +1,41 @@
+name: TESTING MERGE
+on:
+  pull_request:
+    branches: 
+      - master
+      - '*-release'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CHECKING OUT
+        uses: actions/checkout@v2
+      - name: SETTING UP JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: BUILDING WITH MAVEN
+        id: mavenbuild
+        run: mvn --batch-mode --update-snapshots verify
+      - name: COMMENT ON PR
+        if: ${{ steps.mavenbuild.outcome }} == "failure"
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
+          COMMENT_BODY: "{ \"body\": \"PR-RELEASE/BUILD-CHECK - ${{ github.event.pull_request.head.sha }} : ${{ steps.mavenbuild.outcome }}\" }"
+          GITHUB_TOKEN: ${{ secrets.ACTION_KEY }}
+        run: |
+          echo "$URL"
+          echo "Pruning images from failure..."
+          docker image prune -f
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data "$COMMENT_BODY"
+          if [ "${{ steps.mavenbuild.outcome }}" == "failure" ]
+          then
+              exit 1
+          fi
