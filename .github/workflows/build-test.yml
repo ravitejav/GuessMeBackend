@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
       - name: BUILDING WITH MAVEN
         id: mavenbuild
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn install
       - name: COMMENT ON PR
         if: ${{ steps.mavenbuild.outcome }} == "failure"
         env:
