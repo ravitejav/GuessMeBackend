@@ -1,5 +1,6 @@
 package com.guessme.enduserapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class RoomService {
 	}
 	
 	public Room saveRoom(Room room) {
+		System.out.println(room.getCreatedBy().getUserId());
 		return roomRepository.save(room);
 	}
 	
@@ -35,7 +37,10 @@ public class RoomService {
 	}
 	
 	public List<Room> getElgibleRoom(Integer userId) {
-		return roomRepository.getElgibleRooms(userId);
+		List<Integer> roomIds = roomRepository.getElgibleRooms(userId);
+		List<Room> rooms = new ArrayList<Room>();
+		roomIds.stream().forEach(id -> rooms.add(roomRepository.findById(id).get()));
+		return rooms;
 	}
 
 }

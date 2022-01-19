@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -30,9 +32,29 @@ public class Room {
 	
 	private String roomname;
 	
-	@OneToMany
-	@JoinColumn(name="userid")
+	@ManyToOne
+	@JoinColumn(name = "userid")
+	private User createdBy;
+
+	@ManyToMany
+	@JoinColumn(name = "roomid")
 	private List<User> users;
+	
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 	
 	public String getRoomname() {
 		return roomname;

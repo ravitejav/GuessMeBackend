@@ -25,19 +25,19 @@ public class RoomController {
 		return roomService.saveRoom(room);
 	}
 	
-	@RequestMapping(value = "/elgibleRooms/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/elgibleRooms/{userId}", method = RequestMethod.GET)
 	public List<Room> getAvailableRooms(@PathVariable String userId) {
-		return roomService.getElgibleRoom(Integer.getInteger(userId));
+		return roomService.getElgibleRoom(Integer.parseInt(userId));
 	}
 	
 	@RequestMapping(value = "/{roomId}", method = RequestMethod.POST)
 	public Room getRoomDataById(@PathVariable String roomId) {
-		return roomService.getRoomById(Integer.getInteger(roomId));
+		return roomService.getRoomById(Integer.parseInt(roomId));
 	}
 	
 	@RequestMapping(value = "/getRoomByUser/{userId}", method = RequestMethod.GET)
 	public List<Room> allRoomByUser(@PathVariable String userId) {
-		return roomService.getAllRoomByUser(Integer.getInteger(userId));
+		return roomService.getAllRoomByUser(Integer.parseInt(userId));
 	}
 
 }
