@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 		if (user.isPresent()) {
 			return new MyUserDetails(user.get());
 		}
-		return null;
+		return new MyUserDetails();
 	}
 
 	public User saveUser(User user) {
