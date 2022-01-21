@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
 	public MyUserDetails loadUserByUsername(String username) {
 		Optional<User> user = userRepository.findByUsername(username);
 		if (user.isPresent()) {
+			user.get().setPassword("");
 			return new MyUserDetails(user.get());
 		}
 		return new MyUserDetails();
@@ -48,9 +49,22 @@ public class UserService implements UserDetailsService {
 		if (authUser.isPresent()) {
 			final MyUserDetails userDetails = this.loadUserByUsername(user.getUsername());
 			final String jwt = jwtUtils.generateToken(userDetails);
+			user = authUser.get();
+			user.setPassword("");
 			status.put("user", user);
 			status.put("jwt", jwt);
 		}
 		return status;
 	}
+	
+	public User getUserById(Integer UserId) {
+		Optional<User> user = userRepository.findByUserId(UserId);
+		if(user.isPresent()) {
+			User dbUser = user.get();
+			dbUser.setPassword(null);
+			return dbUser;
+		}
+		return new User();
+	}
+	
 }

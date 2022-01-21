@@ -33,7 +33,7 @@ public class User {
 	@Column(name = "emailid")
 	private String emailId;
 	
-	User() {
+	public User() {
 		
 	}
 	
