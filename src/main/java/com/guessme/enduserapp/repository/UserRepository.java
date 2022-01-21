@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	public Optional<User> findByUsername(String username);
 	
+	public Optional<User> findByUserId(Integer userId);
+	
 	@Query(value = UserQueries.AUTH_USER)
 	public Optional<User> authUser(String username, String Password);
 
