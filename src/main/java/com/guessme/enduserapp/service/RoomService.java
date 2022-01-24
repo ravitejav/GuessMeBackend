@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import com.guessme.enduserapp.models.Room;
+import com.guessme.enduserapp.models.User;
 import com.guessme.enduserapp.repository.RoomRepository;
 
 
@@ -31,9 +32,16 @@ public class RoomService {
 	public Room getRoomById(Integer roomid) {
 		Optional<Room> room =  roomRepository.findById(roomid);
 		if(room.isPresent()) {
-			return room.get();
+			Room fetchedRoom = room.get();
+			List<User> users = new ArrayList<User>();
+			fetchedRoom.getUsers().stream().forEach((User user) -> {
+				user.setPassword("");
+				users.add(user);
+			});
+			fetchedRoom.setUsers(users);
+			return fetchedRoom;
 		}
-		return null;
+		return new Room();
 	}
 	
 	public List<Room> getElgibleRoom(Integer userId) {
@@ -42,5 +50,6 @@ public class RoomService {
 		roomIds.stream().forEach(id -> rooms.add(roomRepository.findById(id).get()));
 		return rooms;
 	}
+	
 
 }
