@@ -30,7 +30,7 @@ public class RoomController {
 		return roomService.getElgibleRoom(Integer.parseInt(userId));
 	}
 	
-	@RequestMapping(value = "/{roomId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{roomId}", method = RequestMethod.GET)
 	public Room getRoomDataById(@PathVariable String roomId) {
 		return roomService.getRoomById(Integer.parseInt(roomId));
 	}
